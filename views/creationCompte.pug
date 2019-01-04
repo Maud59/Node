@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  form.container.text-center#connexion(style='margin:20px auto;')
+    .form-group.formulaire
+      label(for='exampleInputEmail1') Adresse Mail
+      input.form-control(type='email', name='mail', aria-describedby='emailHelp', placeholder='Entrer votre email')
+    .form-group.formulaire
+      label(for='exampleInputPassword1') Mot de passe
+      input.form-control(type='password', name='mdp', placeholder='Mot de passe')
+      .form-group.formulaire
+      label(for='exampleInputPassword1') Nom
+      input.form-control(type='text', name='nom', placeholder='Nom')
+      .form-group.formulaire
+      label(for='exampleInputPassword1') Prénom
+      input.form-control(type='text', name='prenom', placeholder='Prénom')
+    button.btn.btn-dark(type='submit') Inscription

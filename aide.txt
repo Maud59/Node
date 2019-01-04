@@ -1,0 +1,115 @@
+Création d'une api rest
+
+- Création d'un fichier $ npm init
+
+- Installation de express.js
+Le serveur est intégré
+
+- Il faut installer un contact avec la bdd mysql
+- D'un point de vue légal il faut également installer un logger (morgan pour nous ici)
+
+- Il faut également télécharger un module qui va permettre de traduire le code json pour l'interprétation client (body-parser)
+
+- il faudra également installer nodemon pour éviter de relancer notre serveur à chaque fois
+_________________			_________________
+|		|			|		|
+|		|	 json		|		|
+|client-postman	|    <--------->	|serveur - node	|
+|		|			|		|
+|		|			|		|
+_________________			_________________
+
+- Ainsi que pug, qui est un moteur de templates
+
+Création des dossiers répertoires dans notre dossier : 
+middlewars, 
+services - permet de mettre la logique métier
+controllers, 
+models, 
+routes, - permet d'avoir les liens, les routes de nos différents services et métiers.
+views (pas obligatoire dans une API) - permet de créer les pages de notre API (avoir une view)
+index.js - bootstrap de notre appli 
+
+Configuration Variable d'environnement
+il est possible de mettre plusieurs BDD il est possible d'en définir une par défaut et une autre ensuite. 
+
+- utilisation de SEQUELIZE.js (BDD et requete dans node) Installer mysql2 également
+
+- Dans le répertoire controllers, on crée des fichiers par page de destination. Elles sont ainsi triées par catégorie d'action
+
+Le fichier index.js, est créé à chaque fois qu'on a besoin d'un fichier fourre-tout par défaut.
+
+le chemin de notre URL pour la DB est mis dans le fichier dev et prod.json. Le chemin contient les info de connexions
+"url" : "modedebdd(mysql)://user:pass@example.com:port/dbname'); example.com = localhost ou adresse.
+
+Il est important de ne jamais montrer les fichiers qui contiennent les accès à notre BDD. Il ne faut pas rendre public les fichiers dev.json et prod.json. 
+On crée un fichier.dist qui reprenne les infos mais qui reste neutre. Il faudra alors modifier notre fichier plus tard ou créer un script pour faire le lien nécessaire.
+Attention lors de l'utilisaton de github, à bien ignorer les fichiers prod et dev.json dans notre gitignore
+
+
+*un middleware*
+C'est un softaware qui vient se mettre en "un client et un serveur", et y fait un traitement. Un intermédiaire qui va effectuer une action. 
+un firewall est par exemple un middleware
+
+Notre middleware va être représenté par une fonction en l'occurrence dans notre API
+
+
+*Info* 
+Un route est liée à un controller
+Le controller fait appel à un service
+Le service fait appel au model
+
+Et c'est le model qui permet d'effectuer les actions sur notre base de données
+
+- Installation de bcyrpt pour la sécurisation des données et des mots de passe
+
+*Sécurisation*
+
+Le but est de prendre le mot de passe en dur, de le crypter et d'ensuite l'enregistrer dans notre bdd
+On récupère le nom user, il doit être unique. Et on vérifie qu'il existe dans notre bdd. 
+Si c'est ok, on va comparer le mdp soumis par l'utilisateur (clair) au mdp rentré en bdd (mdp hashé) à travers notre fonction de vérification sous bcrypt. 
+
+*JWT - sécurisation de données*
+On pourra rencontrer :
+JWEncoded
+JWSignature
+JWToken
+
+La clef de cryptage doit toujours rester côté serveur et ne doit pas être communiquée. 
+**/!\ Ne jamais perdre le clef**
+Le changement d'une valeur dans le jeton, rend le jeton invalide. Le jeton a une valeur temporaire, il est conseillé d'en changer régulièrement pour éviter les hacks
+- node jsonwebtoken sera le jeton utilisé pour notre api (express-jwt à chercher dans npm)
+
+Une fois que l'authentification est faite, il faudra stocker le jeton dans un cookie, côté client car il sera nécessaire d'avoir ce jeton valide pour effectuer des actions.
+Il n'est pas sécurisé de stocker ce jeton dans un local storage, il est plus prudent de le mettre dans les cookies. En revanche, si le jeton n'est plus valide lors d'une action client,
+la session sera expirée et l'utilisateur devra se reconnecter. 
+
+Le jeton doit être traité côté back et côté front pour permettre à l'utilisateur d'affciher l'API
+
+- installation de cookie-parser et création d'un middleware dans index.js
+La création du middleware avant nos routes, permet d'autoriser au client d'accéder à nos routes et donc à notre API
+
+
+*Promesse*
+Une promesse est une fonction asychrone (une action qui prendra un certain, mais nous ne savons pas combien) qui permet de gérer deux paramètres (callback) : 
+une fonction en cas de succès et une en cas d'erreur.
+Ex : 
+const promesse = new Promise ((resolve,reject)=>{
+	Action(function (){
+		resolve({
+			username : 'toto',
+			password:'1234'
+		})
+	})
+})
+
+Le then doit comporter les arguments (function(data)= Argument 1,function(err) = Argument 2)
+promesse.then(
+	function(data){
+		//success
+		console.log(data);
+	},
+	function(err){
+		//error
+	}
+);

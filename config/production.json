@@ -1,0 +1,15 @@
+{
+      "app":{
+            "name": "Aston API",
+            "version": "0.1.0"
+      },
+      "db":{
+            "default": {
+                  "url": "mysql://root:@localhost/astonapi"
+                  }
+      },
+      "server":{
+            "addr":"localhost",
+            "port": 8000
+      }  
+}

@@ -1,0 +1,10 @@
+extends layout
+block content
+  form.container.text-center#connexion(style='margin:20px auto;')
+    .form-group.formulaire
+      label(for='exampleInputEmail1') Adresse Mail
+      input.form-control#exampleInputEmail1(type='email', name='mail', aria-describedby='emailHelp', placeholder='Entrer votre email')
+    .form-group.formulaire
+      label(for='exampleInputPassword1') Mot de passe
+      input.form-control#exampleInputPassword1(type='password', name='mdp', placeholder='Password')
+    button.btn.btn-dark(type='submit') Connexion
